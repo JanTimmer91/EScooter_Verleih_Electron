@@ -8,7 +8,7 @@ require('@electron/remote/main').initialize()
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
-    autoHideMenuBar: true,
+    //autoHideMenuBar: true,
     width: 800,
     height: 600,
     webPreferences: {

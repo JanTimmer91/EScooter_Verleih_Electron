@@ -25,10 +25,18 @@ h3 {
 }
 
 
+.pages-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
 /* Styles for page rotation */
 
 .pages {
     position: relative;
+    width: 300px;
 }
 
 .page {

@@ -16,12 +16,13 @@ function App() {
         localStorage.setItem('userId', userId);
         window.location.reload()
     }
-    function logout(){
+    function logout() {
         localStorage.setItem('showWebsite', '');
         localStorage.setItem('userName', '');
         localStorage.setItem('userId', '');
         window.location.reload()
     }
+
     return (
         localStorage.getItem('showWebsite') === 'true' ?
             <BrowserRouter>
@@ -35,5 +36,4 @@ function App() {
             : <Login updateState={updateState}/>
     );
 }
-
 export default App;

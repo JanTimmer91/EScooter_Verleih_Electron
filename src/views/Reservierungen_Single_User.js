@@ -51,6 +51,7 @@ const TrCustom = styled.tr`
    }
 `;
 
+
 class Reservierungen_Single_User extends Component {
 
     constructor(props) {
@@ -93,7 +94,7 @@ class Reservierungen_Single_User extends Component {
                         <Col sm>
                             <BigHeader>Reservierungen anzeigen</BigHeader>
                             <RefreshButtonContainer>
-                                <Button style={{paddingLeft: "14px", paddingRight: "46px"}} onClick={() => window.location.reload()}>Neu laden</Button>
+                                <Button style={{paddingLeft: "14px", paddingRight: "46px"}} onClick={() => window.location.reload()()}>Neu laden</Button>
                             </RefreshButtonContainer>
                             <a style={{marginLeft: "10px", fontWeight: 300}}>Letzter Check: {this.getTimeStamp()}</a>
                         </Col>

@@ -17,7 +17,7 @@ class ScooterReservation extends Component {
     scooters = {};
 
     goBackCallbackFunction = () => {this.handleClickScooterRentalBack();};
-    
+
     constructor(props) {
         super(props);
 
@@ -38,49 +38,49 @@ class ScooterReservation extends Component {
         // Check if there is an open reservation
 
         axios.post('http://localhost/BUSINESSSW/reservationoverviewbypersonempty.php', {id: localStorage.getItem('userId')})
-        .then(response => {
-            if (response.data.length > 0) {
-                this.setState({
-                    activeReservationId: response.data[0].RESERVATION_ID,
-                    reservedScooterId: response.data[0].SCOOTER_ID
-                });
-                this.showReturnScooterScreen();
-            } else {
-                this.setState({
-                    activeReservationId: -1,
-                    reservedScooterId: -1
-                });
-                this.scooterAvailable();
-            }
-            
-        });
+            .then(response => {
+                if (response.data.length > 0) {
+                    this.setState({
+                        activeReservationId: response.data[0].RESERVATION_ID,
+                        reservedScooterId: response.data[0].SCOOTER_ID
+                    });
+                    this.showReturnScooterScreen();
+                } else {
+                    this.setState({
+                        activeReservationId: -1,
+                        reservedScooterId: -1
+                    });
+                    this.scooterAvailable();
+                }
+
+            });
     }
 
     scooterAvailable() {
         // Chech if there is an available scooter
 
         axios.get('http://localhost/BUSINESSSW/getScooterStatus.php')
-        .then(response => {
-            this.scooters = response.data;
-            this.setState({
-                scooterAvailable: false,
-                availableScooterId: -1
-            });
-            this.scooters.forEach((scooter) => {
-                if (scooter.RESERVATION_STATUS == "Frei") {
-                    this.setState({
-                        scooterAvailable: true,
-                        availableScooterId: parseInt(scooter.SCOOTER_ID)
-                    });
-                    
+            .then(response => {
+                this.scooters = response.data;
+                this.setState({
+                    scooterAvailable: false,
+                    availableScooterId: -1
+                });
+                this.scooters.forEach((scooter) => {
+                    if (scooter.RESERVATION_STATUS == "Frei") {
+                        this.setState({
+                            scooterAvailable: true,
+                            availableScooterId: parseInt(scooter.SCOOTER_ID)
+                        });
+
+                    }
+                });
+                if (this.state.scooterAvailable) {
+                    this.showRentScooterScreen();
+                } else {
+                    this.showNoScootersAvailableScreen();
                 }
             });
-            if (this.state.scooterAvailable) {
-                this.showRentScooterScreen();
-            } else {
-                this.showNoScootersAvailableScreen();
-            }
-        });
     }
 
 
@@ -102,14 +102,14 @@ class ScooterReservation extends Component {
         };
 
         axios.post('http://localhost/BUSINESSSW/addReservation.php', post_data)
-        .then(response => response.data)
-        .then((data) => {
-            if (data.update && data.insert) {
-                this.showRentScooterSuccessScreen();
-            } else {
-                alert("Der E-Scooter konnte nicht ausgeliehen werden!");
-            }            
-        });
+            .then(response => response.data)
+            .then((data) => {
+                if (data.update && data.insert) {
+                    this.showRentScooterSuccessScreen();
+                } else {
+                    new Notification("Das hat nicht geklappt...", { body: "Der E-Scooter konnte nicht ausgeliehen werden!" })
+                }
+            });
     }
 
     handleReturnScooter() {
@@ -119,14 +119,14 @@ class ScooterReservation extends Component {
         };
 
         axios.post('http://localhost/BUSINESSSW/removeReservation.php', post_data)
-        .then(response => response.data)
-        .then((data) => {
-            if (data.Update3 && data.Update2) {
-                this.showReturnScooterSuccessScreen();
-            } else {
-                alert("Die Rückgabe war nicht erfolgreich.");
-            }            
-        });
+            .then(response => response.data)
+            .then((data) => {
+                if (data.Update3 && data.Update2) {
+                    this.showReturnScooterSuccessScreen();
+                } else {
+                    new Notification("Das hat nicht geklappt...", { body: "Die Rückgabe war nicht erfolgreich!" })
+                }
+            });
     }
 
     handleReload() {
@@ -161,50 +161,52 @@ class ScooterReservation extends Component {
             document.getElementById(this.state.activePage).classList.toggle('rotated');
         }
         document.getElementById(elementId).classList.toggle('rotated');
-        this.setState({activePage: elementId });   
+        this.setState({activePage: elementId });
     }
 
     render() {
         return (
             <div class="container">
-                <h1>E-Scooter Leihen</h1>
-                <div class="pages">
-                    <div id="no_scooter_page" class="page rotated">
-                        <div class="page_content" onClick={this.handleReload}>
-                            <img src={escooterimg_sw} alt="E-Scooter"></img>
-                            <p>Zur Zeit ist leider kein E-Scooter verfügbar.</p>
-                        </div>
-                    </div>
-                    <div id="rent_page" class="page rotated">
-                        <div class="page_content" onClick={this.handleRentScooter}>
-                            <img src={escooterimg} alt="E-Scooter"></img>
-                            <p>Jetzt E-Scooter ausleihen</p>
-                        </div>
-                    </div>
-                    <div id="rent_success_page" class="page rotated">
-                        <div class="successRental">
-                            <img id="scooterImageSuccess" src={escooterimg_sw} alt="E-Scooter"></img>
-                            <div class="text">
-                                <h3>Reservierung erfolgreich.</h3>
-                                <p>Der <span class="highlighted">E-Scooter Nr. {this.state.availableScooterId}</span> steht nun für Sie bereit</p>
-                                <button onClick={this.handleReload}>Zurück</button>
+                <div class="pages-container">
+                    <div class="pages">
+                        <h1>E-Scooter leihen</h1>
+                        <div id="no_scooter_page" class="page rotated">
+                            <div class="page_content" onClick={this.handleReload}>
+                                <img src={escooterimg_sw} alt="E-Scooter"></img>
+                                <p>Zur Zeit ist leider kein E-Scooter verfügbar.</p>
                             </div>
                         </div>
-                    </div>
-                    <div id="return_page" class="page rotated">
-                        <div class="page_content" onClick={this.handleReturnScooter}>
-                            <img src={escooterimg_sw} alt="E-Scooter"></img>
-                            <p>E-Scooter jetzt zurückgeben.</p>
-                        </div>
-                    </div>
-                    <div id="return_success_page" class="page rotated">
-                        <div class="page_content">
-                            <img src={escooterimg_sw} alt="E-Scooter"></img>
-                            <div class="text">
-                                <h3>Der E-Scooter wurde zurückgegeben.</h3>
-                                <button onClick={this.handleReload}>Zurück</button>
+                        <div id="rent_page" class="page rotated">
+                            <div class="page_content" onClick={this.handleRentScooter}>
+                                <img src={escooterimg} alt="E-Scooter"></img>
+                                <p>Jetzt E-Scooter ausleihen</p>
                             </div>
+                        </div>
+                        <div id="rent_success_page" class="page rotated">
+                            <div class="successRental">
+                                <img id="scooterImageSuccess" src={escooterimg_sw} alt="E-Scooter"></img>
+                                <div class="text">
+                                    <h3>Reservierung erfolgreich.</h3>
+                                    <p>Der <span class="highlighted">E-Scooter Nr. {this.state.availableScooterId}</span> steht nun für Sie bereit</p>
+                                    <button onClick={this.handleReload}>Zurück</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="return_page" class="page rotated">
+                            <div class="page_content" onClick={this.handleReturnScooter}>
+                                <img src={escooterimg_sw} alt="E-Scooter"></img>
+                                <p>E-Scooter jetzt zurückgeben.</p>
+                            </div>
+                        </div>
+                        <div id="return_success_page" class="page rotated">
+                            <div class="page_content">
+                                <img src={escooterimg_sw} alt="E-Scooter"></img>
+                                <div class="text">
+                                    <h3>Der E-Scooter wurde zurückgegeben.</h3>
+                                    <button onClick={this.handleReload}>Zurück</button>
+                                </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>
