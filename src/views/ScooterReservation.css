@@ -1,0 +1,108 @@
+/* Common styles for reservation */
+
+.container {
+    position: relative;
+    color: #333;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+    background: #fc5439;
+    border: 1px solid #fc5439;
+    padding: 5px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+h3 {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.highlighted {
+    color: #fc5439;
+    font-weight: bold;
+}
+
+
+/* Styles for page rotation */
+
+.pages {
+    position: relative;
+}
+
+.page {
+    position: absolute;
+    width: 300px;
+    height: 350px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 25px;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    background-color: #fff;
+    transition: all 0.8s ease;
+}
+
+
+.page_content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 25px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.page_content:hover > img {
+    transform: scale(1.2);
+}
+
+img {
+    position: absolute;
+    width: 100%;
+    border-radius: inherit;
+    transition: all 0.3s linear;
+}
+
+.page_content p {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    top: 50%;
+    transform: translate(0%, -10%);
+    padding: 10px;
+
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+
+.successRental {
+    position: relative;
+    background: #333;
+    border-radius: inherit;
+    height: inherit;
+    height: 350px;
+    overflow: hidden;
+}
+
+.text {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 50%;
+    transform: translate(0%, -50%);
+    padding: 10px;
+
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+
+
+.rotated{
+    transform: rotateY(180deg);
+}
