@@ -85,6 +85,7 @@ class ScooterReservation extends Component {
 
 
     componentDidMount() {
+        document.body.style.backgroundColor = "rgba(203,203,210,.15)"
         this.initScooterReservation();
     }
 
