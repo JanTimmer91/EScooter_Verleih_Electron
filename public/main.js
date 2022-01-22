@@ -1,13 +1,68 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain } = require('electron')
 
 const path = require('path')
 const isDev = require('electron-is-dev')
+const isMac = process.platform === 'darwin'
 
 require('@electron/remote/main').initialize()
 
+var win
+
+let userLoggedIn = false;
+
+const menuTemplate_loggedIn = [
+  {
+      label: 'Scooter',
+      submenu: [
+          { 
+              label: 'Meine Reservierungen',
+              click: async () => {
+                win.webContents.send('ROUTING_MESSAGE', '/reservierungshistorie')
+              }
+          },
+          { 
+              label: 'Verfügbarkeit einsehen',
+              click: async () => {
+                win.webContents.send('ROUTING_MESSAGE', '/scooterStatus')
+              }
+          },
+          { 
+              label: 'Scooter Reservieren',
+              click: async () => {
+                win.webContents.send('ROUTING_MESSAGE', '/')
+              }
+          },
+          { 
+            type: 'separator'
+          },
+          { 
+            label: 'Abmelden',
+            click: async () => {
+              win.webContents.send('LOGOUT_USER', '')
+            }
+          },
+          isMac ? { role: 'close' } : { role: 'quit' },
+          { 
+            role: 'toggleDevTools', 
+            visible: isDev 
+          }
+      ]
+  }
+]
+
+const menuTemplate_loggedOut = [
+  {
+      label: 'Scooter',
+      submenu: [
+          isMac ? { role: 'close' } : { role: 'quit' }
+      ]
+  }
+]
+
+
 function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     //autoHideMenuBar: true,
     width: 800,
     height: 600,
@@ -24,7 +79,22 @@ function createWindow() {
   )
 }
 
-app.on('ready', createWindow)
+const menu = Menu.buildFromTemplate(menuTemplate_loggedOut)
+Menu.setApplicationMenu(menu)
+
+app.on('ready', () => {
+  createWindow()
+
+  ipcMain.on('LOGGED_IN_CHANGED', (event, data) => {
+    userLoggedIn = data
+    var selectedTemplate = menuTemplate_loggedOut
+    if (userLoggedIn) {
+      selectedTemplate = menuTemplate_loggedIn
+    }
+    const menu = Menu.buildFromTemplate(selectedTemplate)
+    Menu.setApplicationMenu(menu)
+  })
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
