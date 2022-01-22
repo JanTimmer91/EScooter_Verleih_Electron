@@ -38,7 +38,7 @@ const menuTemplate_loggedIn = [
           { 
             label: 'Abmelden',
             click: async () => {
-              win.webContents.send('LOGOUT_USER', '')
+              win.webContents.send('LOGOUT_USER', '/login')
             }
           },
           isMac ? { role: 'close' } : { role: 'quit' },

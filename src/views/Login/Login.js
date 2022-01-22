@@ -27,7 +27,7 @@ export default class Login extends Component {
             .then(data => {
                 if (data.ok.length >0) {
                     console.log("Name "+data.ok[0].NAME)
-                    this.props.updateState(true, name, data.ok[0].USER_ID)
+                    this.props.login(true, name, data.ok[0].USER_ID)
 
                 } else {
                     new Notification("Login fehlgeschlagen", { body: "Zu dem Usernamen und Passwort ist kein registrierter Benutzer hinterlegt!" })

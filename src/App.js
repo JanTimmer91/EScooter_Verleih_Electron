@@ -13,13 +13,14 @@ const { ipcRenderer } = window.require('electron');
 
 function App() {
 
-    function updateState(bool, userName, userId){
+    function login(bool, userName, userId){
         ipcRenderer.send('LOGGED_IN_CHANGED', true);
         localStorage.setItem('showWebsite', bool);
         localStorage.setItem('userName', userName);
         localStorage.setItem('userId', userId);
         window.location.reload()
     }
+
     function logout() {
         ipcRenderer.send('LOGGED_IN_CHANGED', false);
         localStorage.setItem('showWebsite', '');
@@ -47,7 +48,7 @@ function App() {
             </Switch>
             <RoutingElectron></RoutingElectron>
         </BrowserRouter>
-            : <Login updateState={updateState}/>
+            : <Login path='/login' login={login}/>
     );
 }
 export default App;

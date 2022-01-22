@@ -14,4 +14,9 @@ export const routes = [
         path: '/',
         cName: 'dropdown-link'
     },
+    {
+        title: 'Login',
+        path: '/login',
+        cName: 'dropdown-link'
+    },
 ];
