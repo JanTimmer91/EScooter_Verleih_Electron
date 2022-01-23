@@ -133,16 +133,16 @@ class Reservierungen_Single_User extends Component {
                                             <td>{reservation.SCOOTER_ID}</td>
                                             <td>{reservation.STARTDATE}</td>
                                             {
-                                                new Date(reservation.ENDDATE) < new Date() ?
+                                                reservation.ENDDATE === null ?
                                                     <>
-                                                        <td>({reservation.STARTDATE})</td>
+                                                        <td>{reservation.ENDDATE}</td>
                                                         <b style={{color: "green", fontWeight: "bold"}}>Reservierung
-                                                            abgelaufen</b></>
-                                                    : <>
-                                                        <td>({reservation.ENDDATE})</td>
-                                                        <b style={{color: "red", fontWeight: "bold"}}>Reservierung
                                                             aktiv</b></>
-                                            }                                        </>
+                                                    : <>
+                                                        <td>{reservation.ENDDATE}</td>
+                                                        <b style={{color: "red", fontWeight: "bold"}}>Reservierung
+                                                            abgelaufen</b></>
+                                            }                                      </>
                                     </tr>
                                     : null
                                 ) :
